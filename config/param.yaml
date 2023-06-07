@@ -1,0 +1,7 @@
+# Warning: Don't replace anything aside the value!
+
+Topic Name Config:
+  image input: /usb_cam/image_raw
+  ball coordinate: /ball_coordinate
+  frame height: 640
+  frame width: 640
