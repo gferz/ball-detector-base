@@ -3,5 +3,7 @@
 Topic Name Config:
   image input: /usb_cam/image_raw
   ball coordinate: /ball_coordinate
+
+Frame Size Config:
   frame height: 640
   frame width: 640

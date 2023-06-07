@@ -6,13 +6,14 @@
 #include <cv_bridge/cv_bridge.h>
 
 #define TOPIC "Topic Name Config"
+#define FRAME "Frame Size Config"
 #define CONFIG_PATH
 
 namespace av = alfarobi::vision;
 
 static YAML::Node *config = new YAML::Node(YAML::LoadFile(CONFIG_PATH));
-static int frame_height;
-static int frame_width;
+static int frame_height = (*config)[FRAME]["frame height"].as<int>();
+static int frame_width = (*config)[FRAME]["frame width"].as<int>();
 
 av::BallDetector::BallDetector() :
 it_(nh_),
