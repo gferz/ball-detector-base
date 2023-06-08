@@ -66,7 +66,7 @@ void av::BallDetector::update(){}
 
 void av::BallDetector::process()
 {
-    av::BallDetector::setup();
+    this->setup();
 
     while(ros::ok())
     { 
