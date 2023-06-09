@@ -1,3 +1,4 @@
+#include <string>
 #include <ros/ros.h>
 #include <yaml-cpp/yaml.h>
 #include <ball_detector.hpp>
@@ -5,22 +6,19 @@
 #include <geometry_msgs/Point.h>
 #include <cv_bridge/cv_bridge.h>
 
-#define TOPIC "Topic Name Config"
-#define FRAME "Frame Size Config"
-#define CONFIG_PATH
-
 namespace av = alfarobi::vision;
 
-static YAML::Node *config = new YAML::Node(YAML::LoadFile(CONFIG_PATH));
-static int frame_height = (*config)[FRAME]["frame height"].as<int>();
-static int frame_width = (*config)[FRAME]["frame width"].as<int>();
-
 av::BallDetector::BallDetector() :
-it_(nh_),
-sub_(it_.subscribe((*config)[TOPIC]["image input"].as<std::string>(), 1, &av::BallDetector::imageCallback,this)),
-pub_(nh_.advertise<geometry_msgs::Point>((*config)[TOPIC]["ball coordinate"].as<std::string>(), 1000))
+it_(nh_)
 {
-    delete config;
+    std::string img_in_topic = nh.param<std::string>("image_input", "/usb_cam/image_raw");
+    std::string ballpos_topic = nh.param<std::string>("ball_pos", "/ball_pos");
+
+    sub_ = it_.subscribe(img_in_topic, 1, &av::BallDetector::imageCallback,this);
+    pub_ = nh_.advertise<geometry_msgs::Point>(ballpos_topic, 1000);
+
+    frame_height = nh_.param<int>("frame_height", 640);
+    frame_width = nh_.param<int>("frame_width", 640);
 }
 
 av::BallDetector::~BallDetector(){}
@@ -70,7 +68,12 @@ void av::BallDetector::process()
 
     while(ros::ok())
     { 
-        if( !(main_frame.empty()) ) this->update();
+        if( !main_frame.empty() )
+        {
+            cv::resize(main_frame, main_frame, cv::Size(frame_width, frame_height));
+            this->update();
+        }
+
         ros::spinOnce();
     }
 }
