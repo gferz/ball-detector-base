@@ -40,13 +40,13 @@ namespace alfarobi::vision
              * @param x x coordinate of ball
              * @param y y coordinate of ball
              */
-            virtual void publish_coordinate(int x, int y) const final;
+            virtual void publishCoordinate(int x, int y) const final;
 
             /**
              * @brief Ball not found.
              * 
              */
-            virtual void publish_not_found() const final;
+            virtual void publishnNotFound() const final;
 
             /**
              * @brief This method will only be called once.
