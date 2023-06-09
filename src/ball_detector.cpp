@@ -11,14 +11,11 @@ namespace av = alfarobi::vision;
 av::BallDetector::BallDetector() :
 it_(nh_)
 {
-    std::string img_in_topic = nh.param<std::string>("image_input", "/usb_cam/image_raw");
-    std::string ballpos_topic = nh.param<std::string>("ball_pos", "/ball_pos");
+    std::string img_in_topic = nh_.param<std::string>("image_input", "/usb_cam/image_raw");
+    std::string ballpos_topic = nh_.param<std::string>("ball_pos", "/ball_pos");
 
     sub_ = it_.subscribe(img_in_topic, 1, &av::BallDetector::imageCallback,this);
     pub_ = nh_.advertise<geometry_msgs::Point>(ballpos_topic, 1000);
-
-    frame_height = nh_.param<int>("frame_height", 640);
-    frame_width = nh_.param<int>("frame_width", 640);
 }
 
 av::BallDetector::~BallDetector(){}
@@ -70,8 +67,14 @@ void av::BallDetector::process()
     { 
         if( !main_frame.empty() )
         {
-            cv::resize(main_frame, main_frame, cv::Size(frame_width, frame_height));
-            this->update();
+            try
+            {
+                this->update();
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
         }
 
         ros::spinOnce();
