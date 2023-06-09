@@ -16,6 +16,9 @@ it_(nh_)
 
     sub_ = it_.subscribe(img_in_topic, 1, &av::BallDetector::imageCallback,this);
     pub_ = nh_.advertise<geometry_msgs::Point>(ballpos_topic, 1000);
+
+    frame_height = 640;
+    frame_width = 640;
 }
 
 av::BallDetector::~BallDetector(){}
@@ -32,7 +35,7 @@ void av::BallDetector::imageCallback(const sensor_msgs::ImageConstPtr& msg)
     }
 }
 
-void av::BallDetector::publish_coordinate(int x, int y) const
+void av::BallDetector::publishCoordinate(int x, int y) const
 {
     geometry_msgs::Point p;
     if(x < 0 || x > frame_height) throw("argument outside the range!");
@@ -45,7 +48,7 @@ void av::BallDetector::publish_coordinate(int x, int y) const
     pub_.publish(p);
 }
 
-void av::BallDetector::publish_not_found() const
+void av::BallDetector::publishNotFound() const
 {
     geometry_msgs::Point p;
 
@@ -79,4 +82,14 @@ void av::BallDetector::process()
 
         ros::spinOnce();
     }
+}
+
+void av::BallDetector::setFrameHeight(int height)
+{
+    this->frame_height = height;
+}
+
+void av::BallDetector::setFrameWidth(int width)
+{
+    this->frame_width = width;
 }
