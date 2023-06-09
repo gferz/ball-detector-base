@@ -68,6 +68,9 @@ namespace alfarobi::vision
 
             void imageCallback(const sensor_msgs::ImageConstPtr& msg);
             
+            int frame_height;
+            int frame_width;
+
         public:
             BallDetector();
             ~BallDetector();
