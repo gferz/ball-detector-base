@@ -76,7 +76,7 @@ void av::BallDetector::process()
             }
             catch(const std::exception& e)
             {
-                std::cerr << e.what() << '\n';
+                ROS_ERROR("%s", e.what());
             }
         }
 
