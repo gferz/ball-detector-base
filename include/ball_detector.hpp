@@ -46,7 +46,7 @@ namespace alfarobi::vision
              * @brief Ball not found.
              * 
              */
-            virtual void publishnNotFound() const final;
+            virtual void publishNotFound() const final;
 
             /**
              * @brief This method will only be called once.
@@ -80,5 +80,20 @@ namespace alfarobi::vision
              * 
              */
             virtual void process() final;
+
+
+            /**
+             * @brief Set the frame_height value
+             * 
+             * @param height y size of frame
+             */
+            void setFrameHeight(int height);
+
+            /**
+             * @brief Set the frame_width value
+             * 
+             * @param width
+             */
+            void setFrameWidth(int width);
     };
 }
